@@ -3,13 +3,12 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.*;
 
-// Класс Wallet - управление кошельком пользователя
-
+// Класс, представляющий кошелек пользователя
 public class Wallet implements Serializable {
-    private double balance;
-    private final Map<String, Double> income;
-    private final Map<String, Double> expense;
-    private final Map<String, Double> budgets;
+    private double balance; // Баланс кошелька
+    private final Map<String, Double> income; // Доходы по категориям
+    private final Map<String, Double> expense; // Расходы по категориям
+    private final Map<String, Double> budgets; // Бюджеты по категориям
 
     public Wallet() {
         this.balance = 0;
@@ -22,7 +21,7 @@ public class Wallet implements Serializable {
         return balance;
     }
 
-    // Метод для добавления дохода
+    // Добавление дохода
     public void addIncome(Scanner scanner) {
         System.out.print("Введите категорию дохода: ");
         String category = scanner.nextLine();
@@ -31,7 +30,7 @@ public class Wallet implements Serializable {
         scanner.nextLine();
 
         if (amount <= 0) {
-            System.out.println("Сумма дохода должна быть положительной.");
+            System.out.println("Сумма должна быть положительной.");
             return;
         }
 
@@ -39,7 +38,7 @@ public class Wallet implements Serializable {
         System.out.println("Доход добавлен.");
     }
 
-    // Метод для добавления расхода
+    // Добавление расхода
     public void addExpense(Scanner scanner) {
         System.out.print("Введите категорию расхода: ");
         String category = scanner.nextLine();
@@ -48,7 +47,7 @@ public class Wallet implements Serializable {
         scanner.nextLine();
 
         if (amount <= 0) {
-            System.out.println("Сумма расхода должна быть положительной.");
+            System.out.println("Сумма должна быть положительной.");
             return;
         }
 
@@ -56,13 +55,13 @@ public class Wallet implements Serializable {
         System.out.println("Расход добавлен.");
     }
 
-    // Прямое добавление дохода
+    // Добавление дохода напрямую
     public void addIncomeDirect(String category, double amount) {
         income.put(category, income.getOrDefault(category, 0.0) + amount);
         balance += amount;
     }
 
-    // Прямое добавление расхода
+    // Добавление расхода напрямую
     public void addExpenseDirect(String category, double amount) {
         expense.put(category, expense.getOrDefault(category, 0.0) + amount);
         balance -= amount;
@@ -72,7 +71,7 @@ public class Wallet implements Serializable {
         }
     }
 
-    // Метод для установки бюджета
+    // Установка бюджета
     public void setBudget(Scanner scanner) {
         System.out.print("Введите категорию: ");
         String category = scanner.nextLine();
@@ -89,12 +88,14 @@ public class Wallet implements Serializable {
         System.out.println("Бюджет установлен.");
     }
 
-    // Метод для отображения статистики
+    // Отображение статистики
     public void displayStats() {
         System.out.println("Общий баланс: " + balance);
-        System.out.println("Доходы: " + income);
-        System.out.println("Расходы: " + expense);
-        System.out.println("Бюджеты: " + budgets);
+        System.out.println("Общие доходы: " + income.values().stream().mapToDouble(Double::doubleValue).sum());
+        System.out.println("Доходы по категориям: " + income);
+        System.out.println("Общие расходы: " + expense.values().stream().mapToDouble(Double::doubleValue).sum());
+        System.out.println("Расходы по категориям: " + expense);
+        System.out.println("Бюджеты по категориям: " + budgets);
 
         budgets.forEach((category, budget) -> {
             double spent = expense.getOrDefault(category, 0.0);
