@@ -3,16 +3,15 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.io.*;
 
-// Класс FinanceApp - основная логика приложения
+// Класс для управления приложением
 public class FinanceApp {
-    private Map<String, User> users;
-    private User loggedInUser;
-    private final Scanner scanner;
+    private Map<String, User> users; // Хранилище пользователей
+    private User loggedInUser; // Текущий авторизованный пользователь
+    private final Scanner scanner; // Сканнер для ввода данных
 
-    // Конструктор приложения финансового управления
     public FinanceApp() {
-        this.scanner = new Scanner(System.in);
-        loadUsers();
+        this.scanner = new Scanner(System.in); // Инициализация сканера
+        loadUsers(); // Загрузка данных пользователей
     }
 
     // Основной цикл работы приложения
@@ -22,18 +21,18 @@ public class FinanceApp {
                 System.out.println("1. Войти\n2. Зарегистрироваться\n3. Выйти");
                 String choice = scanner.nextLine();
                 switch (choice) {
-                    case "1": login(); break;
-                    case "2": register(); break;
-                    case "3": saveUsers(); return;
+                    case "1": login(); break; // Вход
+                    case "2": register(); break; // Регистрация
+                    case "3": saveUsers(); return; // Сохранение данных и выход
                     default: System.out.println("Неверная команда.");
                 }
             } else {
-                userMenu();
+                userMenu(); // Меню пользователя
             }
         }
     }
 
-    // Метод для авторизации пользователя
+    // Метод для входа пользователя
     private void login() {
         System.out.print("Введите логин: ");
         String username = scanner.nextLine();
@@ -65,17 +64,17 @@ public class FinanceApp {
         System.out.println("Регистрация успешна!");
     }
 
-    // Меню авторизованного пользователя
+    // Главное меню пользователя
     private void userMenu() {
         System.out.println("1. Добавить доход\n2. Добавить расход\n3. Установить бюджет\n4. Показать статистику\n5. Перевести средства другому пользователю\n6. Выйти");
         String choice = scanner.nextLine();
         switch (choice) {
-            case "1": loggedInUser.getWallet().addIncome(scanner); break;
-            case "2": loggedInUser.getWallet().addExpense(scanner); break;
-            case "3": loggedInUser.getWallet().setBudget(scanner); break;
-            case "4": loggedInUser.getWallet().displayStats(); break;
-            case "5": transferFunds(); break;
-            case "6": loggedInUser = null; break;
+            case "1": loggedInUser.getWallet().addIncome(scanner); break; // Добавление дохода
+            case "2": loggedInUser.getWallet().addExpense(scanner); break; // Добавление расхода
+            case "3": loggedInUser.getWallet().setBudget(scanner); break; // Установка бюджета
+            case "4": loggedInUser.getWallet().displayStats(); break; // Показ статистики
+            case "5": transferFunds(); break; // Перевод средств
+            case "6": loggedInUser = null; break; // Выход из аккаунта
             default: System.out.println("Неверная команда.");
         }
     }
@@ -108,7 +107,7 @@ public class FinanceApp {
         }
     }
 
-    // Метод сохранения данных пользователей
+    // Метод для сохранения данных пользователей
     private void saveUsers() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("users.dat"))) {
             oos.writeObject(users);
@@ -118,7 +117,7 @@ public class FinanceApp {
         }
     }
 
-    // Метод загрузки данных пользователей
+    // Метод для загрузки данных пользователей
     private void loadUsers() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("users.dat"))) {
             users = (Map<String, User>) ois.readObject();
