@@ -1,15 +1,15 @@
 import java.io.Serializable;
 
-// Класс User - модель пользователя
+// Класс, представляющий пользователя
 public class User implements Serializable {
-    private final String username;
-    private final String password;
-    private final Wallet wallet;
+    private final String username; // Логин пользователя
+    private final String password; // Пароль пользователя
+    private final Wallet wallet; // Кошелек пользователя
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.wallet = new Wallet();
+        this.wallet = new Wallet(); // Инициализация кошелька
     }
 
     public String getUsername() {
